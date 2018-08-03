@@ -143,8 +143,15 @@ bool abb_file_suite::uploadFile(const std::string& ftp_addr, const std::string& 
 
   curl_global_init(CURL_GLOBAL_ALL);
   curlhandle = curl_easy_init();
+  std::string to ="";
+  if (filepath.find("gripper") != std::string::npos){
+      to = "ftp://" + ftp_addr + "/mGripper.mod";
+  }
+  else{
+    to = "ftp://" + ftp_addr + "/mGodelBlend.mod";
+  }
 
-  std::string to = "ftp://" + ftp_addr + "/mGodelBlend.mod";
+  //std::string to = "ftp://" + ftp_addr + "/mGodelBlend.mod";
 
   std::string user_pwd = user_name + ":" + password;
 

@@ -10,7 +10,7 @@
 // Constants
 const static std::string EXECUTE_PROGRAM_SERVICE_NAME = "execute_program";
 const static std::string RAPID_MODULE_NAME = "mGodel_blend.mod";
-
+const static std::string RAPID_GRIPPER_NAME = "mGripper.mod";
 // Utility functions
 static double toDegrees(const double radians) { return radians * 180.0 / M_PI; }
 
@@ -108,6 +108,7 @@ bool abb_file_suite::AbbMotionFtpDownloader::handleServiceCall(
 {
   // Check for existence
   std::ifstream ifh(req.file_path.c_str());
+
   if (!ifh)
   {
     ROS_WARN("Could not open file '%s'.", req.file_path.c_str());
@@ -115,5 +116,10 @@ bool abb_file_suite::AbbMotionFtpDownloader::handleServiceCall(
   }
   ifh.close();
 
-  return uploadFile(ip_ + "/PARTMODULES", req.file_path.c_str(),  user_, pwd_);
+  ROS_INFO("calling abb_file_suite::uploadFile()");
+  bool r = uploadFile(ip_ + "/PARTMODULES", req.file_path.c_str(),  user_, pwd_);
+  ROS_INFO("done with abb_file_suite::uploadFile()");
+
+  return r;
+  
 }
