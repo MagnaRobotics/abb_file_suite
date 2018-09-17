@@ -1,3 +1,4 @@
+// THIS FILE IS USED WHEN SENDING ACTUAL MOTION COMMANDS, BUT NOT FOR IO, OR WAITS. That is done by rapid_postprocessor.cpp
 #include "rapid_generator/rapid_emitter.h"
 
 #include <iostream>
@@ -205,6 +206,9 @@ bool rapid_emitter::emitJointTrajectoryFile(std::ostream& os,
   os << "EndProc\n";
   // write any footers including main procedure calling the above
   os << "ENDMODULE\n";
+
+  std::cout <<"RAPID EMITTER: rapid program generated as follows (haven't figured out how to print output of ostream object): \n";
+  //Parag - explore how to print the ofstream object on console??!
 
   return os.good();
 }

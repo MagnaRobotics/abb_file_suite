@@ -1,3 +1,4 @@
+//THIS IS USED FOR IO AND WAITS, BUT NOT ACTUAL MOTION COMMANDS (which is rapid_emitter.cpp)
 #include "rapid_generator/rapid_postprocessor.h"
 #include <stdexcept>
 #include <cmath>
@@ -28,6 +29,9 @@ std::string rapid_generator::Program::generate() const
   whole_program << "EndProc\n";
 
   whole_program << "ENDMODULE\n";
+
+  std::cout << "RAPID PROGRAM GENERATED AS FOLLOWS: \n";
+  std::cout << whole_program.str();
 
   return whole_program.str();
 }
