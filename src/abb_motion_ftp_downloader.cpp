@@ -102,12 +102,18 @@ void abb_file_suite::AbbMotionFtpDownloader::handleJointTrajectory(
     return;
   }
 
-  std::ifstream myfile;
-  std::string STRING;
-  myfile.open(temp_file_path.c_str());
-  myfile >> STRING;
-  std::cout << STRING << std::endl;
-  myfile.close();
+  std::ifstream t(temp_file_path.c_str());
+  std::string str;
+  
+  t.seekg(0, std::ios::end);   
+  str.reserve(t.tellg());
+  t.seekg(0, std::ios::beg);
+  
+  str.assign((std::istreambuf_iterator<char>(t)),
+             std::istreambuf_iterator<char>());
+  t.close();
+
+  std::cerr << "RAPID FILE\n\n"<<str<<"\n\n";
   
   // send to controller
   if (!uploadFile(ip_ + "/PARTMODULES", temp_file_path, user_, pwd_))
