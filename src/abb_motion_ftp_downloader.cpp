@@ -96,6 +96,21 @@ void abb_file_suite::AbbMotionFtpDownloader::handleJointTrajectory(
   bool valid = rapid_emitter::emitJointTrajectoryFile(ofh, pts, params);
   ofh.flush();
   ofh.close();
+
+  bool too_small = false;  
+  double duration_limit = 0.005; 
+  if (traj.points.size() > 0)
+  {
+    if ((traj.points[traj.points.size()-1].time_from_start - traj.points[0].time_from_start).toSec()< duration_limit)
+    {
+      too_small = true;
+    }
+  }
+
+  if (too_small) {
+    ROS_WARN("RAPID file emitter: time difference between goal and initial position is too smaller than %f sec. Not sending it.", duration_limit);
+    return;
+  }
   
   if (!valid) {
     ROS_WARN("RAPID file emitter returned invalid program.  Not sending it.");
