@@ -90,18 +90,20 @@ void abb_file_suite::AbbMotionFtpDownloader::handleJointTrajectory(
     rapid_emitter::TrajectoryPt pt(tmp, duration);
     pts.push_back(pt);
   }
-  if (pts.empty())
-  {
-    ROS_WARN("RAPID: points emtpy. NOT sending rapid file.");
-    return;
-  }
 
   rapid_emitter::ProcessParams params;
   params.wolf_mode = false;
-  rapid_emitter::emitJointTrajectoryFile(ofh, pts, params);
+  bool valid = rapid_emitter::emitJointTrajectoryFile(ofh, pts, params);
   ofh.flush();
+
+  std::cerr << ofh.rdbuf() <<"\n";
   ofh.close();
 
+  if (!valid) {
+    ROS_WARN("RAPID file emitter returned invalid program.  Not sending it.");
+    return;
+  }
+  
   // send to controller
   if (!uploadFile(ip_ + "/PARTMODULES", temp_file_path, user_, pwd_))
   {
