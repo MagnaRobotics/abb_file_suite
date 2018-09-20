@@ -1,6 +1,7 @@
 #include "abb_file_suite/abb_motion_ftp_downloader.h"
 
 #include <fstream>
+#include <iostream>
 
 #include <ros/ros.h>
 
@@ -89,6 +90,11 @@ void abb_file_suite::AbbMotionFtpDownloader::handleJointTrajectory(
     rapid_emitter::TrajectoryPt pt(tmp, duration);
     pts.push_back(pt);
   }
+  if (pts.empty())
+  {
+    ROS_WARN("RAPID: points emtpy. NOT sending rapid file.");
+    return;
+  }
 
   rapid_emitter::ProcessParams params;
   params.wolf_mode = false;
@@ -108,6 +114,7 @@ bool abb_file_suite::AbbMotionFtpDownloader::handleServiceCall(
 {
   // Check for existence
   std::ifstream ifh(req.file_path.c_str());
+  ROS_WARN("RAPID ExecuteProgram service opening file '%s'.", req.file_path.c_str());
 
   if (!ifh)
   {

@@ -114,6 +114,7 @@ bool rapid_emitter::emitFreeMotion(std::ostream& os, const ProcessParams& params
   }
   else
   {
+    std::cout << "emitFreeMotion: duration  = " << duration << " sec \n"; 
     os << "MoveAbsJ jTarget_" << n << ", vMotionSpeed, \\T:=" << duration << ", "
        << zone << ", tool1;\n";
   }
