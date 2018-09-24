@@ -182,7 +182,7 @@ bool rapid_emitter::emitJointTrajectoryFile(std::ostream& os,
 
   // Write header
   os << "MODULE mGodel_Blend\n\n";
-  // Emit all of the joint points
+  // Emit all of the joint points (skip first point though. If not skipping, index =0)
   for (std::size_t i = 1; i < points.size(); ++i)
   {
     emitJointPosition(os, points[i], i);
@@ -194,7 +194,7 @@ bool rapid_emitter::emitJointTrajectoryFile(std::ostream& os,
   // For 0 to lengthFreeMotion, emit free moves
  
 
-  // Write first point as normal move abs j so that the robot gets to where it needs to be
+  // (skipping this - Write first point as normal move abs j so that the robot gets to where it needs to be
   //emitFreeMotion(os, params, 0, 0.0, true); // the robot is already here! so skipping it.
 
   // The second motion

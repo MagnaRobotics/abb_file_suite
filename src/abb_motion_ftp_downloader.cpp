@@ -97,7 +97,8 @@ void abb_file_suite::AbbMotionFtpDownloader::handleJointTrajectory(
   ofh.flush();
   ofh.close();
 
-  double duration_limit = 0.005; 
+  // do not send rapid file if the total motion duration is infinitesimally small. This typically happens if the start and stop pose are same.
+  double duration_limit = 0.005; //sec, based on empirical tests, 0.0027 sec was a failure, so going higher
   if (traj.points.size() > 0)
   {
     if ((traj.points[traj.points.size()-1].time_from_start - traj.points[0].time_from_start).toSec()< duration_limit)
@@ -112,6 +113,8 @@ void abb_file_suite::AbbMotionFtpDownloader::handleJointTrajectory(
     return;
   }
 
+
+  // print contents of the RAPID file
   std::ifstream t(temp_file_path.c_str());
   std::string str;
   
